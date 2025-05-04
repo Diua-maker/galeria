@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diua Artes - Artista e Desenhador</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #e74c3c;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: #e74c3c;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #c0392b;
+        }
+
+        /* Navegação */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: #333;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #e74c3c;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: #e74c3c;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        /* Seção de Boas-vindas */
+        #inicio {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('20250428_15404512.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            text-align: center;
+            padding: 150px 20px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+            color: #fff;
+        }
+
+        /* Seção Sobre */
+        #sobre {
+            background-color: #fff;
+        }
+
+        .sobre-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .sobre-img {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .sobre-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .sobre-img:hover img {
+            transform: scale(1.05);
+        }
+
+        .sobre-text {
+            flex: 1;
+        }
+
+        /* Seção Galeria */
+        #galeria {
+            background-color: #f8f9fa;
+        }
+
+        .galeria-filtros {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filtro-btn {
+            background: none;
+            border: none;
+            padding: 8px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .filtro-btn:hover, .filtro-btn.active {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .galeria-item {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .galeria-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .galeria-img {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .galeria-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .galeria-item:hover .galeria-img img {
+            transform: scale(1.1);
+        }
+
+        .galeria-info {
+            padding: 20px;
+        }
+
+        .galeria-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .galeria-info p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Seção Contacto */
+        #contacto {
+            background-color: #fff;
+        }
+
+        .contacto-content {
+            display: flex;
+            gap: 50px;
+        }
+
+        .contacto-info {
+            flex: 1;
+        }
+
+        .contacto-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .contacto-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .contacto-text h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .contacto-text p, .contacto-text a {
+            color: #666;
+        }
+
+        .contacto-text a:hover {
+            color: #e74c3c;
+        }
+
+        .mapa {
+            flex: 1;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .mapa iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: #e74c3c;
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        /* Botão de Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: #c0392b;
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .sobre-content, .contacto-content {
+                flex-direction: column;
+            }
+
+            .sobre-img, .contacto-info, .mapa {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(50vh - 80px);
+                background-color: #fff;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: left 0.3s ease;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .galeria-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* Estilos para páginas */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho e Navegação -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Diua Artes</a>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#inicio" class="nav-link active" data-page="inicio">Início</a></li>
+                    <li><a href="#sobre" class="nav-link" data-page="sobre">Sobre</a></li>
+                    <li><a href="#galeria" class="nav-link" data-page="galeria">Galeria</a></li>
+                    <li><a href="#contacto" class="nav-link" data-page="contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Páginas do Site -->
+    <main>
+        <!-- Página Início -->
+        <section id="inicio" class="page active">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Diua Artes</h1>
+                    <p>Transformando ideias em arte visual com paixão e criatividade</p>
+                    <a href="#galeria" class="btn">Ver Galeria</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Sobre -->
+        <section id="sobre" class="page">
+            <div class="container">
+                <h2>Sobre Mim</h2>
+                <div class="sobre-content">
+                    <div class="sobre-img">
+                        <img src="InShot_20230918_73125856.jpg" alt="Coragem Diua - Diua Artes">
+                    </div>
+                    <div class="sobre-text">
+                        <h3>Coragem Diua</h3>
+                        <p>Olá! Sou Coragem Diua, também conhecido como Diua Artes. Nasci em Milange, província da Zambézia em Moçambique, e, agora, por questões de estudos, resido na cidade de Quelimane onde actualmente resido no bairro Coalane 2.</p>
+                        <p>Desde pouco tempo atrás, descobri a minha paixão pelo desenho e pelas artes visuais. Tenho desenvolvido o meu estilo único, combinando técnicas tradicionais com uma visão contemporânea que reflecte a rica cultura moçambicana e as minhas experiências pessoais.</p>
+                        <p>A minha arte é uma expressão da minha alma, das histórias que me rodeiam e das pessoas que encontro. Trabalho com várias técnicas, desde o desenho a lápis de grafite até à pintura a óleo e acrílico, sempre procurando capturar a essência e a beleza do mundo à minha volta.</p>
+                        <p>Quando não estou a desenhar ou a pintar, gosto de explorar novos lugares, conhecer pessoas e absorver novas influências para a minha arte. Estou sempre aberto a colaborações e novos projectos que me permitam expandir os meus horizontes artísticos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Galeria -->
+        <section id="galeria" class="page">
+            <div class="container">
+                <h2>Galeria de Arte</h2>
+                <div class="galeria-filtros">
+                    <button class="filtro-btn active" data-filter="todos">Todos</button>
+                    <button class="filtro-btn" data-filter="desenho">Desenho</button>
+                    <button class="filtro-btn" data-filter="pintura">Pintura</button>
+                    <button class="filtro-btn" data-filter="digital">Arte Digital</button>
+                </div>
+                <div class="galeria-grid" id="galeria-container">
+                    <!-- As imagens serão carregadas via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Contacto -->
+        <section id="contacto" class="page">
+            <div class="container">
+                <h2>Contacto</h2>
+                <div class="contacto-content">
+                    <div class="contacto-info">
+                        <p>Estou sempre disponível para discutir novos projectos, colaborações ou simplesmente conversar sobre arte. Não hesite em entrar em contacto comigo através dos seguintes meios:</p>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contacto-text">
+                                <h3>Localização</h3>
+                                <p>Bairro Coalane 2, Quelimane, Moçambique</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="contacto-text">
+                                <h3>WhatsApp</h3>
+                                <a href="https://wa.me/872007783" target="_blank">+258 872007783</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contacto-text">
+                                <h3>Email</h3>
+                                <a href="mailto:diuacoragem164@gmail.com">diuacoragem164@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contacto-item">
+                            <div class="contacto-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contacto-text">
+                                <h3>Horário de Trabalho</h3>
+                                <p>Segunda a Domingo: 8h às 22h (virtualmente)</p>
+                                <p>Sábado e Domingo: 13h às 17h (presencialmente)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mapa">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15217.139001244688!2d36.87790687775581!3d-17.87731740901329!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18d2f3924aa8e58b%3A0x301b05494bd39d41!2sCoalane%2C%20Quelimane%2C%20Mozambique!5e0!3m2!1sen!2spt!4v1652364854367!5m2!1sen!2spt" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Diua artes</div>
+                <div class="social-links">
+                    <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-behance"></i></a>
+                </div>
+                <p>Obrigado por visitar o meu site. Fique à vontade para explorar a minha galeria e entrar em contacto para qualquer informação adicional.</p>
+                <p class="copyright">&copy; <span id="ano-atual"></span> Diua Artes. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Dados das obras de arte
+        const obras = [
+            {
+                id: 1,
+                titulo: "Retrato de uma donzela",
+                tecnica: "Grafite sobre papel",
+                ano: 2025,
+                categoria: "desenho",
+                imagem: "20250428_113112.jpg"
+            },
+            {
+                id: 2,
+                titulo: "Retrato de um idoso",
+                tecnica: "Grafite sobre papel",
+                ano: 2025,
+                categoria: "desenho",
+                imagem: "20250428_113052.jpg"
+            },
+            {
+                id: 3,
+                titulo: "Retrato de uma criança",
+                tecnica: "Grafite sobre papel",
+                ano: 2025,
+                categoria: "desenho",
+                imagem: "20250428_113101.jpg"
+            },
+            {
+                id: 4,
+                titulo: "Amor de mãe",
+                tecnica: "óleo sobre tela",
+                ano: 2024,
+                categoria: "pintura",
+                imagem: "InShot_20241016_211010644.jpg"
+            },
+            
+        ];
+
+        // Carregar obras na galeria
+        function carregarGaleria(filtro = 'todos') {
+            const galeriaContainer = document.getElementById('galeria-container');
+            galeriaContainer.innerHTML = '';
+
+            const obrasParaMostrar = filtro === 'todos' 
+                ? obras 
+                : obras.filter(obra => obra.categoria === filtro);
+
+            obrasParaMostrar.forEach(obra => {
+                const item = document.createElement('div');
+                item.className = 'galeria-item';
+                item.innerHTML = `
+                    <div class="galeria-img">
+                        <img src="${obra.imagem}" alt="${obra.titulo}">
+                    </div>
+                    <div class="galeria-info">
+                        <h3>${obra.titulo}</h3>
+                        <p>Técnica: ${obra.tecnica}</p>
+                        <p>Ano: ${obra.ano}</p>
+                    </div>
+                `;
+                galeriaContainer.appendChild(item);
+            });
+        }
+
+        // Navegação entre páginas
+        function navegarParaPagina(pageId) {
+            // Esconder todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostrar a página selecionada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Atualizar links ativos
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelector(`.nav-link[data-page="${pageId}"]`).classList.add('active');
+            
+            // Fechar menu móvel se estiver aberto
+            document.querySelector('.nav-links').classList.remove('active');
+            
+            // Rolar para o topo
+            window.scrollTo(0, 0);
+        }
+
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar galeria inicial
+            carregarGaleria();
+            
+            // Configurar filtros da galeria
+            document.querySelectorAll('.filtro-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    carregarGaleria(this.getAttribute('data-filter'));
+                });
+            });
+            
+            // Configurar navegação
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    navegarParaPagina(pageId);
+                });
+            });
+            
+            // Configurar botão do menu móvel
+            document.querySelector('.menu-toggle').addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.toggle('active');
+            });
+            
+            // Configurar botão de voltar ao topo
+            const backToTop = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('active');
+                } else {
+                    backToTop.classList.remove('active');
+                }
+            });
+            
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Atualizar ano no rodapé
+            document.getElementById('ano-atual').textContent = new Date().getFullYear();
+            
+            // Efeito de scroll no cabeçalho
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 50) {
+                    document.querySelector('header').classList.add('scrolled');
+                } else {
+                    document.querySelector('header').classList.remove('scrolled');
+                }
+            });
+            
+            // Configurar link da galeria na página inicial
+            document.querySelector('.hero-content .btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                navegarParaPagina('galeria');
+            });
+        });
+    </script>
+</body>
+</html>
