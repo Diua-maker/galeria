@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diua Artes - Coragem Diua</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Adicione os SDKs do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <style>
         /* Estilos Gerais */
         * {
@@ -293,6 +297,115 @@
         .galeria-info p {
             color: #666;
             font-size: 0.95rem;
+        }
+
+        /* Botões de Like/Dislike */
+        .reaction-buttons {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .reaction-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-right: 10px;
+            color: #666;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .reaction-btn.like.active {
+            color: #2ecc71;
+        }
+
+        .reaction-btn.dislike.active {
+            color: #e74c3c;
+        }
+
+        .reaction-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .reaction-count {
+            margin-left: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* Botão de Comentários */
+        .comment-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #3498db;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .comment-btn i {
+            margin-right: 5px;
+        }
+
+        /* Área de Comentários */
+        .comments-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background-color: #f5f5f5;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .comments-section.open {
+            max-height: 500px;
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .comments-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .comment {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comment:last-child {
+            border-bottom: none;
+        }
+
+        .comment-form {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+
+        .comment-submit {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .comment-submit:hover {
+            background-color: #2980b9;
         }
 
         /* Seção Contacto */
@@ -651,6 +764,21 @@
 
     <!-- JavaScript -->
     <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJg86inTsKc5UFBR5rZTCE_uew0XjeeCo",
+  authDomain: "diua-artes.firebaseapp.com",
+  databaseURL: "https://diua-artes-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "diua-artes",
+  storageBucket: "diua-artes.firebasestorage.app",
+  messagingSenderId: "818700405986",
+  appId: "1:818700405986:web:846e0c058c35e1ffe062bb"
+};
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // Dados das obras de arte
         const obras = [
             {
@@ -813,7 +941,7 @@
                 categoria: "desenho",
                 imagem: "Screenshot_20240830-2028111.png"
             },
-    {
+            {
                 id: 21,
                 titulo: "Autorretrato",
                 tecnica: "Grafite sobre papel",
@@ -823,7 +951,7 @@
             },
         ];
 
-        // Carregar obras na galeria
+        // Carregar obras na galeria com funcionalidades de like/dislike e comentários
         function carregarGaleria(filtro = 'todos') {
             const galeriaContainer = document.getElementById('galeria-container');
             galeriaContainer.innerHTML = '';
@@ -835,6 +963,8 @@
             obrasParaMostrar.forEach(obra => {
                 const item = document.createElement('div');
                 item.className = 'galeria-item';
+                item.dataset.id = obra.id;
+                
                 item.innerHTML = `
                     <div class="galeria-img">
                         <img src="${obra.imagem}" alt="${obra.titulo}">
@@ -843,10 +973,222 @@
                         <h3>${obra.titulo}</h3>
                         <p>Técnica: ${obra.tecnica}</p>
                         <p>Ano: ${obra.ano}</p>
+                        
+                        <div class="reaction-buttons">
+                            <button class="reaction-btn like" data-id="${obra.id}">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span class="reaction-count like-count">0</span>
+                            </button>
+                            <button class="reaction-btn dislike" data-id="${obra.id}">
+                                <i class="fas fa-thumbs-down"></i>
+                                <span class="reaction-count dislike-count">0</span>
+                            </button>
+                        </div>
+                        
+                        <button class="comment-btn" data-id="${obra.id}">
+                            <i class="fas fa-comment"></i> Comentar
+                        </button>
+                        
+                        <div class="comments-section" id="comments-${obra.id}">
+                            <div class="comments-list" id="comments-list-${obra.id}"></div>
+                            <form class="comment-form" data-id="${obra.id}">
+                                <input type="text" class="comment-input" placeholder="Escreva seu comentário..." required>
+                                <button type="submit" class="comment-submit">Publicar</button>
+                            </form>
+                        </div>
                     </div>
                 `;
+                
                 galeriaContainer.appendChild(item);
+                
+                // Carregar reações e comentários do Firebase
+                carregarReacoes(obra.id);
+                carregarComentarios(obra.id);
             });
+            
+            // Configurar eventos para os botões de like/dislike
+            document.querySelectorAll('.reaction-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const obraId = this.getAttribute('data-id');
+                    const tipo = this.classList.contains('like') ? 'like' : 'dislike';
+                    reagirObra(obraId, tipo);
+                });
+            });
+            
+            // Configurar eventos para os botões de comentários
+            document.querySelectorAll('.comment-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const obraId = this.getAttribute('data-id');
+                    const commentsSection = document.getElementById(`comments-${obraId}`);
+                    commentsSection.classList.toggle('open');
+                    
+                    // Rolar para a seção de comentários
+                    if (commentsSection.classList.contains('open')) {
+                        commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            });
+            
+            // Configurar eventos para os formulários de comentários
+            document.querySelectorAll('.comment-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const obraId = this.getAttribute('data-id');
+                    const input = this.querySelector('.comment-input');
+                    const comentario = input.value.trim();
+                    
+                    if (comentario) {
+                        publicarComentario(obraId, comentario);
+                        input.value = '';
+                    }
+                });
+            });
+        }
+
+        // Função para carregar reações do Firebase
+        function carregarReacoes(obraId) {
+            const likesRef = database.ref(`obras/${obraId}/likes`);
+            const dislikesRef = database.ref(`obras/${obraId}/dislikes`);
+            const userReactionRef = database.ref(`userReactions/${obraId}/${getUserId()}`);
+            
+            // Carregar contagem de likes
+            likesRef.on('value', (snapshot) => {
+                const count = snapshot.val() || 0;
+                document.querySelectorAll(`.like[data-id="${obraId}"] .like-count`).forEach(el => {
+                    el.textContent = count;
+                });
+            });
+            
+            // Carregar contagem de dislikes
+            dislikesRef.on('value', (snapshot) => {
+                const count = snapshot.val() || 0;
+                document.querySelectorAll(`.dislike[data-id="${obraId}"] .dislike-count`).forEach(el => {
+                    el.textContent = count;
+                });
+            });
+            
+            // Verificar reação do usuário atual
+            userReactionRef.on('value', (snapshot) => {
+                const reaction = snapshot.val();
+                const likeBtn = document.querySelector(`.like[data-id="${obraId}"]`);
+                const dislikeBtn = document.querySelector(`.dislike[data-id="${obraId}"]`);
+                
+                // Resetar todos os botões
+                likeBtn?.classList.remove('active');
+                dislikeBtn?.classList.remove('active');
+                
+                // Ativar o botão correspondente à reação do usuário
+                if (reaction === 'like') {
+                    likeBtn?.classList.add('active');
+                } else if (reaction === 'dislike') {
+                    dislikeBtn?.classList.add('active');
+                }
+            });
+        }
+
+        // Função para reagir a uma obra
+        function reagirObra(obraId, tipo) {
+            const userId = getUserId();
+            if (!userId) {
+                alert('Por favor, faça login com o Google para reagir.');
+                return;
+            }
+            
+            const userReactionRef = database.ref(`userReactions/${obraId}/${userId}`);
+            const likesRef = database.ref(`obras/${obraId}/likes`);
+            const dislikesRef = database.ref(`obras/${obraId}/dislikes`);
+            
+            userReactionRef.once('value').then((snapshot) => {
+                const currentReaction = snapshot.val();
+                
+                // Se o usuário já tiver a mesma reação, remove
+                if (currentReaction === tipo) {
+                    userReactionRef.remove();
+                    
+                    // Atualizar contagem
+                    if (tipo === 'like') {
+                        likesRef.transaction((current) => (current || 0) - 1);
+                    } else {
+                        dislikesRef.transaction((current) => (current || 0) - 1);
+                    }
+                } 
+                // Se o usuário tiver reação oposta, troca
+                else if (currentReaction) {
+                    userReactionRef.set(tipo);
+                    
+                    // Atualizar contagens
+                    if (tipo === 'like') {
+                        likesRef.transaction((current) => (current || 0) + 1);
+                        dislikesRef.transaction((current) => (current || 0) - 1);
+                    } else {
+                        dislikesRef.transaction((current) => (current || 0) + 1);
+                        likesRef.transaction((current) => (current || 0) - 1);
+                    }
+                } 
+                // Se o usuário não tiver reagido ainda, adiciona
+                else {
+                    userReactionRef.set(tipo);
+                    
+                    // Atualizar contagem
+                    if (tipo === 'like') {
+                        likesRef.transaction((current) => (current || 0) + 1);
+                    } else {
+                        dislikesRef.transaction((current) => (current || 0) + 1);
+                    }
+                }
+            });
+        }
+
+        // Função para carregar comentários do Firebase
+        function carregarComentarios(obraId) {
+            const commentsRef = database.ref(`obras/${obraId}/comments`);
+            
+            commentsRef.on('value', (snapshot) => {
+                const commentsList = document.getElementById(`comments-list-${obraId}`);
+                commentsList.innerHTML = '';
+                
+                const comments = snapshot.val() || {};
+                
+                // Ordenar comentários por timestamp (mais recentes primeiro)
+                const sortedComments = Object.values(comments).sort((a, b) => b.timestamp - a.timestamp);
+                
+                sortedComments.forEach(comment => {
+                    const commentEl = document.createElement('div');
+                    commentEl.className = 'comment';
+                    commentEl.textContent = comment.text;
+                    commentsList.appendChild(commentEl);
+                });
+            });
+        }
+
+        // Função para publicar um comentário
+        function publicarComentario(obraId, texto) {
+            const userId = getUserId();
+            if (!userId) {
+                alert('Por favor, faça login com o Google para comentar.');
+                return;
+            }
+            
+            const commentsRef = database.ref(`obras/${obraId}/comments`);
+            const newCommentRef = commentsRef.push();
+            
+            newCommentRef.set({
+                text: texto,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                userId: userId
+            });
+        }
+
+        // Função para obter ID do usuário (simplificado para demonstração)
+        function getUserId() {
+            // Na prática, você usaria o UID do Firebase Auth
+            // Aqui estamos usando um identificador único do navegador/localStorage
+            let userId = localStorage.getItem('diua_userId');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('diua_userId', userId);
+            }
+            return userId;
         }
 
         // Navegação entre páginas
