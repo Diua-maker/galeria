@@ -24,6 +24,63 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
+    /* Estilos para o Overlay do Loader */
+.loader-overlay {
+    position: fixed; /* Para cobrir toda a tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Um fundo branco semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Para garantir que fique no topo */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out; /* Para uma transição suave ao esconder */
+    opacity: 1;
+    visibility: visible;
+}
+
+.loader-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Estilos para o Spinner Duplo */
+.loader.spinner-double {
+    width: 50px; /* Você pode ajustar o tamanho aqui */
+    height: 50px; /* Você pode ajustar o tamanho aqui */
+    position: relative;
+    border-radius: 50%;
+    border: 5px solid transparent; /* Ajuste a espessura da borda aqui */
+    border-top-color: #e74c3c;    /* Cor da primeira borda giratória */
+    border-bottom-color: #e74c3c; /* Cor da primeira borda giratória */
+    animation: spin 1.5s linear infinite;
+}
+
+.loader.spinner-double::before {
+    content: "";
+    position: absolute;
+    top: 5px; /* Deve ser igual à espessura da borda do elemento pai */
+    left: 5px; /* Deve ser igual à espessura da borda do elemento pai */
+    right: 5px; /* Deve ser igual à espessura da borda do elemento pai */
+    bottom: 5px; /* Deve ser igual à espessura da borda do elemento pai */
+    border-radius: 50%;
+    border: 5px solid transparent; /* Ajuste a espessura da borda aqui */
+    border-top-color: #f1c40f;    /* Cor da segunda borda giratória */
+    border-bottom-color: #f1c40f; /* Cor da segunda borda giratória */
+    animation: spin 2s linear infinite reverse; /* Rotação reversa e velocidade diferente para efeito */
+}
+
+/* Animação de Rotação (Keyframes) */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
         .container {
             max-width: 1200px;
@@ -616,6 +673,12 @@
     </style>
 </head>
 <body>
+    <!-- Início do Loader -->
+<div id="page-loader" class="loader-overlay">
+    <div class="loader spinner-double"></div>
+</div>
+<!-- Fim do Loader -->
+    
     <!-- Cabeçalho e Navegação -->
     <header>
         <div class="container">
@@ -653,7 +716,7 @@
                 <h2>Sobre Mim</h2>
                 <div class="sobre-content">
                     <div class="sobre-img">
-                        <img src="InShot_20230918_73125856.jpg" alt="Coragem Diua - Diua Artes">
+                        <img src="InShot_20250511_062657088.jpg" alt="Coragem Diua - Diua Artes">
                     </div>
                     <div class="sobre-text">
                         <h3>Coragem Diua</h3>
@@ -779,6 +842,24 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+  // Script para controlar a visibilidade do loader
+window.addEventListener('load', function() {
+    const loaderOverlay = document.getElementById('page-loader');
+    if (loaderOverlay) {
+        // Adiciona a classe 'hidden' para iniciar a transição de desaparecimento
+        loaderOverlay.classList.add('hidden');
+
+        // Opcional: remover completamente o loader do DOM após a transição
+        // para evitar que ele interfira com interações, mesmo estando invisível.
+        // setTimeout(function() {
+        //     if (loaderOverlay.parentNode) {
+        //         loaderOverlay.parentNode.removeChild(loaderOverlay);
+        //     }
+        // }, 500); // Deve corresponder à duração da transição no CSS (0.5s = 500ms)
+    }
+});
+  
+    
         // Dados das obras de arte
         const obras = [
             {
@@ -993,7 +1074,7 @@
                             <div class="comments-list" id="comments-list-${obra.id}"></div>
                             <form class="comment-form" data-id="${obra.id}">
                                 <input type="text" class="comment-input" placeholder="Escreva seu comentário..." required>
-                                <button type="submit" class="comment-submit">Publicar</button>
+                                <button type="submit" class="comment-submit">Enviar</button>
                             </form>
                         </div>
                     </div>
