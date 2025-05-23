@@ -272,6 +272,7 @@
         .galeria-img {
             height: auto;
             overflow: hidden;
+            cursor: pointer; /* Adicionado para indicar que é clicável */
         }
 
         .galeria-img img {
@@ -547,6 +548,189 @@
             background-color: #c0392b;
         }
 
+        /* Estilos para páginas */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Estilos para o Modal de Imagem */
+        .image-modal {
+            display: none; /* Escondido por padrão */
+            position: fixed;
+            z-index: 2000; /* Acima de outros elementos */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85); /* Fundo preto semi-transparente */
+            padding-top: 50px; /* Espaço para o botão de fechar */
+        }
+
+        .image-modal-content {
+            margin: auto;
+            display: block;
+            width: auto;
+            max-width: 80%;
+            max-height: 75vh; /* Altura máxima da imagem */
+            background-color: #fff; /* Fundo branco para a área da imagem */
+            border: 8px solid #e74c3c; /* Borda vermelha principal */
+            box-shadow: 0 0 0 3px #000, 0 0 25px rgba(0,0,0,0.7); /* Borda preta fina e sombra */
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .image-modal-inner-content {
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 0 0 3px 3px; /* Para cantos arredondados se a borda for interna */
+        }
+
+
+        #modalImage {
+            display: block;
+            margin: 0 auto; /* Centralizar a imagem se for menor que o contêiner */
+            max-width: 100%;
+            max-height: calc(75vh - 120px); /* Ajustar altura para caber título e ações */
+            object-fit: contain;
+        }
+
+        .image-modal-close-btn {
+            position: absolute;
+            top: -40px; /* Ajustado para fora da borda vermelha */
+            right: -5px;
+            color: #fff; /* Cor branca para contraste com fundo escuro */
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            background-color: #e74c3c; /* Fundo vermelho para o botão */
+            width: 40px;
+            height: 40px;
+            line-height: 35px;
+            text-align: center;
+            border-radius: 50%;
+            border: 2px solid #fff; /* Borda branca no botão de fechar */
+        }
+
+        .image-modal-close-btn:hover,
+        .image-modal-close-btn:focus {
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        .image-modal-caption {
+            text-align: center;
+            padding: 10px 0;
+            color: #333; /* Cor preta para o título */
+        }
+        
+        .image-modal-caption h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: #222;
+        }
+
+        .image-modal-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0 10px;
+            gap: 15px;
+        }
+
+        .modal-action-btn {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-action-btn:hover {
+            background-color: #c0392b;
+            color: #fff;
+        }
+        
+        .modal-action-btn i {
+            font-size: 1.1rem;
+        }
+
+        .modal-share-container {
+            position: relative;
+        }
+
+        .share-options {
+            display: none; /* Escondido por padrão */
+            position: absolute;
+            bottom: 100%; /* Aparece acima do botão de partilha */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 2001; /* Acima do modal content */
+            padding: 5px 0;
+            margin-bottom: 10px; /* Espaço entre o botão e as opções */
+            width: max-content;
+        }
+
+        .share-options.active {
+            display: block;
+        }
+
+        .share-options a, .share-options button {
+            display: block;
+            padding: 8px 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        .share-options a i, .share-options button i {
+            margin-right: 8px;
+            color: #e74c3c;
+        }
+
+        .share-options a:hover, .share-options button:hover {
+            background-color: #f5f5f5;
+            color: #e74c3c;
+        }
+        
+        .temp-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .temp-message.show {
+            opacity: 1;
+        }
+
+
         /* Media Queries */
         @media (max-width: 992px) {
             .sobre-content, .contacto-content {
@@ -555,6 +739,9 @@
 
             .sobre-img, .contacto-info, .mapa {
                 width: 100%;
+            }
+             .image-modal-content {
+                max-width: 90%;
             }
         }
 
@@ -565,23 +752,25 @@
 
             .nav-links {
                 position: fixed;
-                top: 80px;
+                top: 80px; /* Ajustar com base na altura do header */
                 left: -100%;
                 width: 100%;
-                height: calc(50vh - 80px);
+                height: calc(100vh - 80px); /* Altura total menos header */
                 background-color: #fff;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 transition: left 0.3s ease;
+                padding-top: 20px; /* Espaçamento interno */
             }
+
 
             .nav-links.active {
                 left: 0;
             }
 
             .nav-links li {
-                margin: 10px 0;
+                margin: 15px 0; /* Aumentar espaçamento vertical */
             }
 
             section {
@@ -603,25 +792,38 @@
             .galeria-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
-        }
-
-        /* Estilos para páginas */
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
+            
+            .image-modal-actions {
+                flex-direction: column; /* Empilhar botões em telas menores */
+                gap: 10px;
+            }
+            .modal-action-btn {
+                width: 80%;
+                justify-content: center;
+            }
+            .share-options {
+                /* Ajustar posição para não sair da tela */
+                left: auto;
+                right: 0;
+                transform: none;
+                min-width: 200px; /* Para melhor leitura */
+            }
+            .image-modal-content {
+                max-height: 80vh;
+            }
+            #modalImage {
+                 max-height: calc(80vh - 150px); /* Ajustar para mais espaço para ações */
+            }
         }
  
     </style>
 </head>
-<body>l
+<body>
     <!-- Cabeçalho e Navegação -->
     <header>
         <div class="container">
             <nav>
-                <a href="#" class="logo">Diua Artes</a>
+                <a href="#" class="logo" onclick="navegarParaPagina('inicio'); return false;">Diua Artes</a>
                 <div class="menu-toggle">
                     <i class="fas fa-bars"></i>
                 </div>
@@ -643,7 +845,7 @@
                 <div class="hero-content">
                     <h1>Diua Artes</h1>
                     <p>Transformando ideias em arte visual com paixão e criatividade</p>
-                    <a href="#galeria" class="btn">Ver Galeria</a>
+                    <a href="#galeria" class="btn" data-page-nav="galeria">Ver Galeria</a>
                 </div>
             </div>
         </section>
@@ -707,7 +909,7 @@
                             </div>
                             <div class="contacto-text">
                                 <h3>WhatsApp</h3>
-                                <a href="https://wa.me/872007783" target="_blank">+258 872007783</a>
+                                <a href="https://wa.me/258872007783" target="_blank">+258 872007783</a>
                             </div>
                         </div>
                         
@@ -747,10 +949,10 @@
             <div class="footer-content">
                 <div class="footer-logo">Diua artes</div>
                 <div class="social-links">
-                    <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100089909774599" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/diua_artes/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://t.me/diua01" target="_blank"><i class="fab fa-telegram"></i></a>
+                    <a href="https://youtube.com/@diuamusic?si=jX1gYvX1iJ1Z8q7p" target="_blank"><i class="fab fa-youtube"></i></a>
                 </div>
                 <p>Obrigado por visitar o meu site. Fique à vontade para explorar a minha galeria e entrar em contacto para qualquer informação adicional.</p>
                 <p class="copyright">&copy; <span id="ano-atual"></span> Diua Artes. Todos os direitos reservados.</p>
@@ -761,19 +963,50 @@
     <!-- Botão Voltar ao Topo -->
     <div class="back-to-top">
         <i class="fas fa-arrow-up"></i>
-     
+    </div>
+
+    <!-- Modal de Imagem -->
+    <div id="imageModal" class="image-modal">
+        <span class="image-modal-close-btn">&times;</span>
+        <div class="image-modal-content">
+            <img id="modalImage" src="" alt="Imagem Ampliada">
+            <div class="image-modal-inner-content">
+                <div class="image-modal-caption">
+                    <h3 id="modalTitle"></h3>
+                </div>
+                <div class="image-modal-actions">
+                    <a id="modalDownloadBtn" href="#" download class="modal-action-btn">
+                        <i class="fas fa-download"></i> Baixar
+                    </a>
+                    <div class="modal-share-container">
+                        <button id="modalShareBtn" class="modal-action-btn">
+                            <i class="fas fa-share-alt"></i> Partilhar
+                        </button>
+                        <div id="shareOptions" class="share-options">
+                            <a id="shareFacebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            <a id="shareWhatsApp" href="#" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <button id="copyLinkBtn"><i class="fas fa-copy"></i> Copiar Link</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tempMessage" class="temp-message">Link copiado!</div>
+
+
     <!-- JavaScript -->
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDJg86inTsKc5UFBR5rZTCE_uew0XjeeCo",
-  authDomain: "diua-artes.firebaseapp.com",
-  databaseURL: "https://diua-artes-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "diua-artes",
-  storageBucket: "diua-artes.firebasestorage.app",
-  messagingSenderId: "818700405986",
-  appId: "1:818700405986:web:846e0c058c35e1ffe062bb"
-};
+            authDomain: "diua-artes.firebaseapp.com",
+            databaseURL: "https://diua-artes-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "diua-artes",
+            storageBucket: "diua-artes.firebasestorage.app",
+            messagingSenderId: "818700405986",
+            appId: "1:818700405986:web:846e0c058c35e1ffe062bb"
+        };
 
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
@@ -781,175 +1014,102 @@
     
         // Dados das obras de arte
         const obras = [
-            {
-                id: 1,
-                titulo: "Retrato de uma donzela",
-                tecnica: "Grafite sobre papel",
-                ano: 2025,
-                categoria: "desenho",
-                imagem: "20250428_113112.jpg"
-            },
-            {
-                id: 2,
-                titulo: "Retrato de um idoso",
-                tecnica: "Grafite sobre papel",
-                ano: 2025,
-                categoria: "desenho",
-                imagem: "20250428_113052.jpg"
-            },
-            {
-                id: 3,
-                titulo: "Retrato de uma criança",
-                tecnica: "Grafite sobre papel",
-                ano: 2025,
-                categoria: "desenho",
-                imagem: "20250428_113101.jpg"
-            },
-            {
-                id: 4,
-                titulo: "A Manipulação",
-                tecnica: "óleo sobre tela",
-                ano: 2024,
-                categoria: "pintura",
-                imagem: "IMG_20241013_180538.jpg"
-            },
-            {
-                id: 5,
-                titulo: "Natureza morta",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240804_130053.jpg"
-            },
-            {
-                id: 6,
-                titulo: "Paisagem urbana",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240821_170737.jpg"
-            },
-            {
-                id: 7,
-                titulo: "Catedral velha - Quelimane",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240821_172759.jpg"
-            },
-            {
-                id: 8,
-                titulo: "Canter",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240827_105409.jpg"
-            },
-            {
-                id: 9,
-                titulo: "Paisagem rural",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240902_182440.jpg"
-            },
-            {
-                id: 10,
-                titulo: "Paisagem urbana",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240903_061647.jpg"
-            },
-            {
-                id: 11,
-                titulo: "Natureza morta colorida",
-                tecnica: "Lapis de cores sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240919_1620581.jpg"
-            },
-            {
-                id: 12,
-                titulo: "Paisagem simples",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240920_154109.jpg"
-            },
-            {
-                id: 13,
-                titulo: "Um dia - Dia um",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240920_154122.jpg"
-            },
-            {
-                id: 14,
-                titulo: "A emergencia do tempo",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240920_154140.jpg"
-            },
-            {
-                id: 15,
-                titulo: "Amor de mãe",
-                tecnica: "Óleo sobre tela",
-                ano: 2024,
-                categoria: "pintura",
-                imagem: "InShot_20241016_211010644.jpg"
-            },
-            {
-                id: 16,
-                titulo: "Doguinho",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "IMG_20240923_170221.jpg"
-            },
-            {
-                id: 17,
-                titulo: "Olhar o amanhã",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "InShot_20250329_171225131.jpg"
-            },
-            {
-                id: 18,
-                titulo: "Logo Diua Music",
-                tecnica: "Canva",
-                ano: 2025,
-                categoria: "digital",
-                imagem: "DIUA.png"
-            },
-            {
-                id: 19,
-                titulo: "Casa tipo 1",
-                tecnica: "AutoCAD 2012",
-                ano: 2024,
-                categoria: "digital",
-                imagem: "Screenshot_20240613-1234182.png"
-            },
-            {
-                id: 20,
-                titulo: "Utensilios da minha casa",
-                tecnica: "Grafite sobre papel",
-                ano: 2024,
-                categoria: "desenho",
-                imagem: "Screenshot_20240830-2028111.png"
-            },
-            {
-                id: 21,
-                titulo: "Autorretrato",
-                tecnica: "Grafite sobre papel",
-                ano: 2025,
-                categoria: "desenho",
-                imagem: "20250508_164731.jpg"
-            },
+            { id: 1, titulo: "Retrato de uma donzela", tecnica: "Grafite sobre papel", ano: 2025, categoria: "desenho", imagem: "20250428_113112.jpg" },
+            { id: 2, titulo: "Retrato de um idoso", tecnica: "Grafite sobre papel", ano: 2025, categoria: "desenho", imagem: "20250428_113052.jpg" },
+            { id: 3, titulo: "Retrato de uma criança", tecnica: "Grafite sobre papel", ano: 2025, categoria: "desenho", imagem: "20250428_113101.jpg" },
+            { id: 4, titulo: "A Manipulação", tecnica: "óleo sobre tela", ano: 2024, categoria: "pintura", imagem: "IMG_20241013_180538.jpg" },
+            { id: 5, titulo: "Natureza morta", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240804_130053.jpg" },
+            { id: 6, titulo: "Paisagem urbana", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240821_170737.jpg" },
+            { id: 7, titulo: "Catedral velha - Quelimane", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240821_172759.jpg" },
+            { id: 8, titulo: "Canter", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240827_105409.jpg" },
+            { id: 9, titulo: "Paisagem rural", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240902_182440.jpg" },
+            { id: 10, titulo: "Paisagem urbana", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240903_061647.jpg" },
+            { id: 11, titulo: "Natureza morta colorida", tecnica: "Lapis de cores sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240919_1620581.jpg" },
+            { id: 12, titulo: "Paisagem simples", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240920_154109.jpg" },
+            { id: 13, titulo: "Um dia - Dia um", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240920_154122.jpg" },
+            { id: 14, titulo: "A emergencia do tempo", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240920_154140.jpg" },
+            { id: 15, titulo: "Amor de mãe", tecnica: "Óleo sobre tela", ano: 2024, categoria: "pintura", imagem: "InShot_20241016_211010644.jpg" },
+            { id: 16, titulo: "Doguinho", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "IMG_20240923_170221.jpg" },
+            { id: 17, titulo: "Olhar o amanhã", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "InShot_20250329_171225131.jpg" },
+            { id: 18, titulo: "Logo Diua Music", tecnica: "Canva", ano: 2025, categoria: "digital", imagem: "DIUA.png" },
+            { id: 19, titulo: "Casa tipo 1", tecnica: "AutoCAD 2012", ano: 2024, categoria: "digital", imagem: "Screenshot_20240613-1234182.png" },
+            { id: 20, titulo: "Utensilios da minha casa", tecnica: "Grafite sobre papel", ano: 2024, categoria: "desenho", imagem: "Screenshot_20240830-2028111.png" },
+            { id: 21, titulo: "Autorretrato", tecnica: "Grafite sobre papel", ano: 2025, categoria: "desenho", imagem: "20250508_164731.jpg" },
         ];
+
+        // Elementos do Modal
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalCloseBtn = document.querySelector('.image-modal-close-btn');
+        const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+        const modalShareBtn = document.getElementById('modalShareBtn');
+        const shareOptions = document.getElementById('shareOptions');
+        const shareFacebook = document.getElementById('shareFacebook');
+        const shareWhatsApp = document.getElementById('shareWhatsApp');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        const tempMessage = document.getElementById('tempMessage');
+
+
+        function openImageModal(obra) {
+            modalImage.src = obra.imagem;
+            modalImage.alt = obra.titulo;
+            modalTitle.textContent = obra.titulo;
+            modalDownloadBtn.href = obra.imagem; // O atributo 'download' fará o resto
+
+            // Construir URL completa para partilha
+            const imageFullUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/' + obra.imagem;
+            
+            shareFacebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageFullUrl)}`;
+            shareWhatsApp.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(obra.titulo + ' - Veja esta obra de Diua Artes: ' + imageFullUrl)}`;
+            
+            copyLinkBtn.onclick = () => {
+                navigator.clipboard.writeText(imageFullUrl).then(() => {
+                    showTempMessage("Link copiado!");
+                    shareOptions.classList.remove('active');
+                }).catch(err => {
+                    console.error('Erro ao copiar link: ', err);
+                    showTempMessage("Erro ao copiar.");
+                });
+            };
+
+            imageModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Impedir scroll do fundo
+        }
+
+        function closeImageModal() {
+            imageModal.style.display = 'none';
+            shareOptions.classList.remove('active'); // Esconder opções de partilha ao fechar
+            document.body.style.overflow = 'auto'; // Restaurar scroll do fundo
+        }
+        
+        function showTempMessage(message) {
+            tempMessage.textContent = message;
+            tempMessage.classList.add('show');
+            setTimeout(() => {
+                tempMessage.classList.remove('show');
+            }, 2000);
+        }
+
+        modalCloseBtn.addEventListener('click', closeImageModal);
+        imageModal.addEventListener('click', function(event) {
+            if (event.target === imageModal) { // Clicar fora do conteúdo do modal
+                closeImageModal();
+            }
+        });
+
+        modalShareBtn.addEventListener('click', function(event) {
+            event.stopPropagation(); // Impedir que o clique feche o modal se o shareOptions estiver dentro do modal-content
+            shareOptions.classList.toggle('active');
+        });
+        
+        // Fechar opções de partilha se clicar fora delas
+        document.addEventListener('click', function(event) {
+            if (!modalShareBtn.contains(event.target) && !shareOptions.contains(event.target)) {
+                shareOptions.classList.remove('active');
+            }
+        });
+
 
         // Carregar obras na galeria com funcionalidades de like/dislike e comentários
         function carregarGaleria(filtro = 'todos') {
@@ -999,14 +1159,16 @@
                     </div>
                 `;
                 
+                // Adicionar evento de clique para abrir o modal
+                const galeriaImgDiv = item.querySelector('.galeria-img');
+                galeriaImgDiv.addEventListener('click', () => openImageModal(obra));
+
                 galeriaContainer.appendChild(item);
                 
-                // Carregar reações e comentários do Firebase
                 carregarReacoes(obra.id);
                 carregarComentarios(obra.id);
             });
             
-            // Configurar eventos para os botões de like/dislike
             document.querySelectorAll('.reaction-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const obraId = this.getAttribute('data-id');
@@ -1015,21 +1177,18 @@
                 });
             });
             
-            // Configurar eventos para os botões de comentários
             document.querySelectorAll('.comment-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const obraId = this.getAttribute('data-id');
                     const commentsSection = document.getElementById(`comments-${obraId}`);
                     commentsSection.classList.toggle('open');
                     
-                    // Rolar para a seção de comentários
                     if (commentsSection.classList.contains('open')) {
                         commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
                 });
             });
             
-            // Configurar eventos para os formulários de comentários
             document.querySelectorAll('.comment-form').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -1045,13 +1204,11 @@
             });
         }
 
-        // Função para carregar reações do Firebase
         function carregarReacoes(obraId) {
             const likesRef = database.ref(`obras/${obraId}/likes`);
             const dislikesRef = database.ref(`obras/${obraId}/dislikes`);
             const userReactionRef = database.ref(`userReactions/${obraId}/${getUserId()}`);
             
-            // Carregar contagem de likes
             likesRef.on('value', (snapshot) => {
                 const count = snapshot.val() || 0;
                 document.querySelectorAll(`.like[data-id="${obraId}"] .like-count`).forEach(el => {
@@ -1059,7 +1216,6 @@
                 });
             });
             
-            // Carregar contagem de dislikes
             dislikesRef.on('value', (snapshot) => {
                 const count = snapshot.val() || 0;
                 document.querySelectorAll(`.dislike[data-id="${obraId}"] .dislike-count`).forEach(el => {
@@ -1067,31 +1223,32 @@
                 });
             });
             
-            // Verificar reação do usuário atual
             userReactionRef.on('value', (snapshot) => {
                 const reaction = snapshot.val();
                 const likeBtn = document.querySelector(`.like[data-id="${obraId}"]`);
                 const dislikeBtn = document.querySelector(`.dislike[data-id="${obraId}"]`);
                 
-                // Resetar todos os botões
-                likeBtn?.classList.remove('active');
-                dislikeBtn?.classList.remove('active');
+                if (likeBtn) likeBtn.classList.remove('active');
+                if (dislikeBtn) dislikeBtn.classList.remove('active');
                 
-                // Ativar o botão correspondente à reação do usuário
-                if (reaction === 'like') {
-                    likeBtn?.classList.add('active');
-                } else if (reaction === 'dislike') {
-                    dislikeBtn?.classList.add('active');
+                if (reaction === 'like' && likeBtn) {
+                    likeBtn.classList.add('active');
+                } else if (reaction === 'dislike' && dislikeBtn) {
+                    dislikeBtn.classList.add('active');
                 }
             });
         }
 
-        // Função para reagir a uma obra
         function reagirObra(obraId, tipo) {
             const userId = getUserId();
             if (!userId) {
-                alert('Por favor, faça login com o Google para reagir.');
-                return;
+                showTempMessage('Por favor, faça login para reagir.');
+                // Idealmente, aqui você chamaria uma função de login.
+                // Por agora, apenas mostramos uma mensagem.
+                // Para fins de demonstração sem login real, podemos permitir a reação.
+                // Mas, para um sistema real, o login seria crucial.
+                // alert('Por favor, faça login com o Google para reagir.');
+                // return; 
             }
             
             const userReactionRef = database.ref(`userReactions/${obraId}/${userId}`);
@@ -1101,72 +1258,59 @@
             userReactionRef.once('value').then((snapshot) => {
                 const currentReaction = snapshot.val();
                 
-                // Se o usuário já tiver a mesma reação, remove
                 if (currentReaction === tipo) {
                     userReactionRef.remove();
-                    
-                    // Atualizar contagem
-                    if (tipo === 'like') {
-                        likesRef.transaction((current) => (current || 0) - 1);
-                    } else {
-                        dislikesRef.transaction((current) => (current || 0) - 1);
-                    }
+                    if (tipo === 'like') likesRef.transaction((c) => (c || 0) - 1);
+                    else dislikesRef.transaction((c) => (c || 0) - 1);
                 } 
-                // Se o usuário tiver reação oposta, troca
                 else if (currentReaction) {
                     userReactionRef.set(tipo);
-                    
-                    // Atualizar contagens
                     if (tipo === 'like') {
-                        likesRef.transaction((current) => (current || 0) + 1);
-                        dislikesRef.transaction((current) => (current || 0) - 1);
+                        likesRef.transaction((c) => (c || 0) + 1);
+                        dislikesRef.transaction((c) => (c || 0) - 1);
                     } else {
-                        dislikesRef.transaction((current) => (current || 0) + 1);
-                        likesRef.transaction((current) => (current || 0) - 1);
+                        dislikesRef.transaction((c) => (c || 0) + 1);
+                        likesRef.transaction((c) => (c || 0) - 1);
                     }
                 } 
-                // Se o usuário não tiver reagido ainda, adiciona
                 else {
                     userReactionRef.set(tipo);
-                    
-                    // Atualizar contagem
-                    if (tipo === 'like') {
-                        likesRef.transaction((current) => (current || 0) + 1);
-                    } else {
-                        dislikesRef.transaction((current) => (current || 0) + 1);
-                    }
+                    if (tipo === 'like') likesRef.transaction((c) => (c || 0) + 1);
+                    else dislikesRef.transaction((c) => (c || 0) + 1);
                 }
             });
         }
 
-        // Função para carregar comentários do Firebase
         function carregarComentarios(obraId) {
             const commentsRef = database.ref(`obras/${obraId}/comments`);
             
-            commentsRef.on('value', (snapshot) => {
+            commentsRef.orderByChild('timestamp').on('value', (snapshot) => {
                 const commentsList = document.getElementById(`comments-list-${obraId}`);
+                if (!commentsList) return;
                 commentsList.innerHTML = '';
                 
-                const comments = snapshot.val() || {};
+                const comments = [];
+                snapshot.forEach(childSnapshot => {
+                    comments.push(childSnapshot.val());
+                });
                 
-                // Ordenar comentários por timestamp (mais recentes primeiro)
-                const sortedComments = Object.values(comments).sort((a, b) => b.timestamp - a.timestamp);
-                
-                sortedComments.forEach(comment => {
+                // Firebase já pode retornar ordenado, mas podemos re-ordenar se necessário (mais recentes primeiro)
+                comments.reverse().forEach(comment => {
                     const commentEl = document.createElement('div');
                     commentEl.className = 'comment';
-                    commentEl.textContent = comment.text;
+                    // Poderia adicionar nome do usuário e data aqui se estivessem guardados
+                    commentEl.textContent = comment.text; 
                     commentsList.appendChild(commentEl);
                 });
             });
         }
 
-        // Função para publicar um comentário
         function publicarComentario(obraId, texto) {
-            const userId = getUserId();
-            if (!userId) {
-                alert('Por favor, faça login com o Google para comentar.');
-                return;
+            const userId = getUserId(); // Ou firebase.auth().currentUser.uid se autenticado
+             if (!userId) {
+                showTempMessage('Por favor, faça login para comentar.');
+                // alert('Por favor, faça login com o Google para comentar.');
+                // return;
             }
             
             const commentsRef = database.ref(`obras/${obraId}/comments`);
@@ -1175,52 +1319,42 @@
             newCommentRef.set({
                 text: texto,
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
-                userId: userId
+                userId: userId // Ou informações do usuário autenticado
+            }).catch(error => {
+                console.error("Erro ao publicar comentário:", error);
+                showTempMessage("Erro ao enviar comentário.");
             });
         }
 
-        // Função para obter ID do usuário (simplificado para demonstração)
         function getUserId() {
-            // Na prática, você usaria o UID do Firebase Auth
-            // Aqui estamos usando um identificador único do navegador/localStorage
+            // Se Firebase Auth estiver configurado e usuário logado:
+            // if (firebase.auth().currentUser) {
+            //    return firebase.auth().currentUser.uid;
+            // }
             let userId = localStorage.getItem('diua_userId');
             if (!userId) {
-                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                userId = 'anon_' + Math.random().toString(36).substr(2, 9);
                 localStorage.setItem('diua_userId', userId);
             }
             return userId;
         }
 
-        // Navegação entre páginas
         function navegarParaPagina(pageId) {
-            // Esconder todas as páginas
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
             
-            // Mostrar a página selecionada
-            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+            if (activeLink) activeLink.classList.add('active');
             
-            // Atualizar links ativos
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            document.querySelector(`.nav-link[data-page="${pageId}"]`).classList.add('active');
-            
-            // Fechar menu móvel se estiver aberto
-            document.querySelector('.nav-links').classList.remove('active');
-            
-            // Rolar para o topo
+            document.querySelector('.nav-links').classList.remove('active'); // Fechar menu móvel
             window.scrollTo(0, 0);
         }
 
-        // Inicializar quando o DOM estiver carregado
         document.addEventListener('DOMContentLoaded', function() {
-            // Carregar galeria inicial
             carregarGaleria();
             
-            // Configurar filtros da galeria
             document.querySelectorAll('.filtro-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
@@ -1229,7 +1363,6 @@
                 });
             });
             
-            // Configurar navegação
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1238,12 +1371,10 @@
                 });
             });
             
-            // Configurar botão do menu móvel
             document.querySelector('.menu-toggle').addEventListener('click', function() {
                 document.querySelector('.nav-links').classList.toggle('active');
             });
             
-            // Configurar botão de voltar ao topo
             const backToTop = document.querySelector('.back-to-top');
             window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 300) {
@@ -1254,29 +1385,30 @@
             });
             
             backToTop.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
             
-            // Atualizar ano no rodapé
             document.getElementById('ano-atual').textContent = new Date().getFullYear();
             
-            // Efeito de scroll no cabeçalho
             window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 50) {
-                    document.querySelector('header').classList.add('scrolled');
-                } else {
-                    document.querySelector('header').classList.remove('scrolled');
+                const header = document.querySelector('header');
+                if (header) { // Verificar se o header existe
+                   if (window.pageYOffset > 50) {
+                       header.classList.add('scrolled');
+                   } else {
+                       header.classList.remove('scrolled');
+                   }
                 }
             });
             
-            // Configurar link da galeria na página inicial
-            document.querySelector('.hero-content .btn').addEventListener('click', function(e) {
-                e.preventDefault();
-                navegarParaPagina('galeria');
-            });
+            const heroBtn = document.querySelector('.hero-content .btn[data-page-nav]');
+            if (heroBtn) {
+                heroBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page-nav');
+                    navegarParaPagina(pageId);
+                });
+            }
         });
     
     </script>
