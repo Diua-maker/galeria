@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mistura de Tintas Artísticas</title>
+    <style>
+        :root {
+            --color-red: #E74C3C;
+            --color-yellow: #F1C40F;
+            --color-blue: #3498DB;
+            --color-white: #ECF0F1;
+            --color-black: #2C3E50;
+            --color-shadow: rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px var(--color-shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--color-black);
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .color-display-area {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .color-box {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            box-shadow: inset 0 2px 4px var(--color-shadow);
+        }
+
+        .color-box span {
+            background-color: rgba(0,0,0,0.4);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        #target-color-box {
+            background-color: #ccc; /* Placeholder */
+        }
+
+        #mixed-color-box {
+            background-color: #fff; /* Initial mixed color */
+        }
+
+        .sliders-area {
+            margin-bottom: 30px;
+        }
+
+        .slider-container {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-container label {
+            width: 70px;
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .slider-container input[type="range"] {
+            flex-grow: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.9;
+            transition: opacity .2s;
+        }
+
+        .slider-container input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .slider-container input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        #red-slider::-webkit-slider-thumb { background: var(--color-red); }
+        #red-slider::-moz-range-thumb { background: var(--color-red); }
+        #yellow-slider::-webkit-slider-thumb { background: var(--color-yellow); }
+        #yellow-slider::-moz-range-thumb { background: var(--color-yellow); }
+        #blue-slider::-webkit-slider-thumb { background: var(--color-blue); }
+        #blue-slider::-moz-range-thumb { background: var(--color-blue); }
+        #white-slider::-webkit-slider-thumb { background: var(--color-white); border: 2px solid #ccc; }
+        #white-slider::-moz-range-thumb { background: var(--color-white); border: 2px solid #ccc; }
+        #black-slider::-webkit-slider-thumb { background: var(--color-black); }
+        #black-slider::-moz-range-thumb { background: var(--color-black); }
+
+        button#verify-button {
+            background-color: var(--color-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 10px var(--color-shadow);
+        }
+
+        button#verify-button:hover {
+            background-color: #2980B9;
+        }
+
+        #feedback-message {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            min-height: 25px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .color-display-area {
+                flex-direction: column;
+                align-items: center;
+            }
+            .color-box {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 10px;
+            }
+            .slider-container label {
+                width: 60px;
+                font-size: 0.8em;
+            }
+        }
+    /* Estilos do Botão de Voltar */
+        .btn-voltar {
+            position: fixed; /* Fixa o botão na tela */
+            top: 20px; /* Distância do topo */
+            left: 20px; /* Distância da esquerda */
+            background-color: #e74c3c; /* Cor de fundo vermelha */
+            color: white; /* Cor do texto */
+            padding: 10px 15px; /* Espaçamento interno */
+            border: none; /* Remove borda */
+            border-radius: 5px; /* Bordas arredondadas */
+            font-size: 1rem; /* Tamanho da fonte */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            transition: background-color 0.3s; /* Transição suave */
+        }
+
+        .btn-voltar:hover {
+            background-color: #c0392b; /* Cor ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+<!-- Botão de Voltar -->
+    <button class="btn-voltar" onclick="window.history.back();">
+        <i class="fas fa-arrow-left"></i> Voltar
+    </button>
+    <div class="container">
+        <h1>Mistura as cores até alcançar o alvo.</h1>
+        <h3>O resultado da sua mistura aparece logo abaixo do alvo</h3>
+
+        <div class="color-display-area">
+            <div id="target-color-box" class="color-box"><span>Cor Alvo</span></div>
+            <div id="mixed-color-box" class="color-box"><span>Sua Mistura</span></div>
+        </div>
+
+        <div class="sliders-area">
+            <div class="slider-container">
+                <label for="red-slider">Vermelho</label>
+                <input type="range" id="red-slider" min="0" max="100" value="0">
+            </div>
+            <div class="slider-container">
+                <label for="yellow-slider">Amarelo</label>
+                <input type="range" id="yellow-slider" min="0" max="100" value="0">
+            </div>
+            <div class="slider-container">
+                <label for="blue-slider">Azul</label>
+                <input type="range" id="blue-slider" min="0" max="100" value="0">
+            </div>
+            <div class="slider-container">
+                <label for="white-slider">Branco</label>
+                <input type="range" id="white-slider" min="0" max="100" value="0">
+            </div>
+            <div class="slider-container">
+                <label for="black-slider">Preto</label>
+                <input type="range" id="black-slider" min="0" max="100" value="0">
+            </div>
+        </div>
+
+        <button id="verify-button">Verificar</button>
+        <p id="feedback-message"></p>
+    </div>
+
+    <script>
+        const targetColorBox = document.getElementById('target-color-box');
+        const mixedColorBox = document.getElementById('mixed-color-box');
+        const redSlider = document.getElementById('red-slider');
+        const yellowSlider = document.getElementById('yellow-slider');
+        const blueSlider = document.getElementById('blue-slider');
+        const whiteSlider = document.getElementById('white-slider');
+        const blackSlider = document.getElementById('black-slider');
+        const verifyButton = document.getElementById('verify-button');
+        const feedbackMessage = document.getElementById('feedback-message');
+
+        let currentTargetRgb = [];
+
+        const targetColors = [
+            { name: "Laranja", rgb: [255, 165, 0] },
+            { name: "Verde Escuro", rgb: [0, 100, 0] },
+            { name: "Roxo", rgb: [128, 0, 128] },
+            { name: "Castanho", rgb: [139, 69, 19] }, // SaddleBrown
+            { name: "Turquesa", rgb: [64, 224, 208] },
+            { name: "Rosa Claro", rgb: [255, 182, 193] },
+            { name: "Verde Limão", rgb: [50, 205, 50] },
+            { name: "Azul Céu", rgb: [135, 206, 235] },
+            { name: "Bordô", rgb: [128, 0, 0] },
+            { name: "Oliva", rgb: [128, 128, 0] },
+            { name: "Salmão", rgb: [250, 128, 114] },
+            { name: "Índigo", rgb: [75, 0, 130] }
+        ];
+
+        function generateNewTargetColor() {
+            const randomIndex = Math.floor(Math.random() * targetColors.length);
+            const target = targetColors[randomIndex];
+            currentTargetRgb = target.rgb;
+            targetColorBox.style.backgroundColor = `rgb(${target.rgb.join(',')})`;
+            targetColorBox.querySelector('span').textContent = target.name;
+            feedbackMessage.textContent = ""; // Limpar feedback anterior
+        }
+
+        function lerp(a, b, t) {
+            return a * (1 - t) + b * t;
+        }
+
+        function lerpColor(color1, color2, t) {
+            return [
+                Math.round(lerp(color1[0], color2[0], t)),
+                Math.round(lerp(color1[1], color2[1], t)),
+                Math.round(lerp(color1[2], color2[2], t))
+            ];
+        }
+
+        function updateMixedColor() {
+            const r_val = parseInt(redSlider.value) / 100; // 0-1
+            const y_val = parseInt(yellowSlider.value) / 100; // 0-1
+            const b_val = parseInt(blueSlider.value) / 100; // 0-1
+            const w_val = parseInt(whiteSlider.value) / 100; // 0-1
+            const k_val = parseInt(blackSlider.value) / 100; // 0-1
+
+            // RYB Trilinear Interpolation Vertices (RGB values)
+            const c000 = [0, 0, 0];       // Black (as pigment base)
+            const c100 = [255, 0, 0];     // Red
+            const c010 = [255, 255, 0];   // Yellow
+            const c001 = [0, 0, 255];     // Blue
+            const c110 = [255, 165, 0];   // Orange (R+Y)
+            const c011 = [60, 179, 113];  // MediumSeaGreen (Y+B)
+            const c101 = [128, 0, 128];   // Purple (R+B)
+            const c111 = [139, 69, 19];   // SaddleBrown (R+Y+B)
+
+            // Interpolate along Red axis
+            const c_00 = lerpColor(c000, c100, r_val);
+            const c_01 = lerpColor(c001, c101, r_val);
+            const c_10 = lerpColor(c010, c110, r_val);
+            const c_11 = lerpColor(c011, c111, r_val);
+
+            // Interpolate along Yellow axis
+            const cy_0 = lerpColor(c_00, c_10, y_val);
+            const cy_1 = lerpColor(c_01, c_11, y_val);
+
+            // Interpolate along Blue axis
+            let rybColorMix = lerpColor(cy_0, cy_1, b_val);
+
+            // Blend this pigment mix with a white base, based on pigment strength
+            // Pigment strength can be the max of R,Y,B components
+            const pigmentStrength = Math.max(r_val, y_val, b_val);
+            let mixedColor = lerpColor([255, 255, 255], rybColorMix, pigmentStrength);
+
+            // Apply dedicated white slider (lighten)
+            mixedColor = lerpColor(mixedColor, [255, 255, 255], w_val);
+
+            // Apply dedicated black slider (darken)
+            mixedColor = lerpColor(mixedColor, [0, 0, 0], k_val);
+            
+            mixedColorBox.style.backgroundColor = `rgb(${mixedColor[0]}, ${mixedColor[1]}, ${mixedColor[2]})`;
+            return mixedColor;
+        }
+
+        function verifyColor() {
+            const mixedRgb = updateMixedColor(); // Ensure we get the latest color
+            if (!currentTargetRgb || currentTargetRgb.length !== 3) return;
+
+            const dist = Math.sqrt(
+                Math.pow(mixedRgb[0] - currentTargetRgb[0], 2) +
+                Math.pow(mixedRgb[1] - currentTargetRgb[1], 2) +
+                Math.pow(mixedRgb[2] - currentTargetRgb[2], 2)
+            );
+
+            // Max possible distance: sqrt(3 * 255^2) approx 441.6
+            if (dist < 15) { // Very low distance
+                feedbackMessage.textContent = "Perfeito! Incrível!";
+                feedbackMessage.style.color = "#27AE60"; // Green
+                setTimeout(generateNewTargetColor, 1500); // New color after success
+            } else if (dist < 45) { // Low-medium distance
+                feedbackMessage.textContent = "Muito próximo! Continue a tentar.";
+                feedbackMessage.style.color = "#F39C12"; // Orange
+            } else if (dist < 100) { // Medium distance
+                feedbackMessage.textContent = "Está a chegar lá... ajuste um pouco.";
+                feedbackMessage.style.color = "#3498DB"; // Blue
+            } else { // High distance
+                feedbackMessage.textContent = "Ainda longe... Tente outras combinações.";
+                feedbackMessage.style.color = "#E74C3C"; // Red
+            }
+        }
+
+        // Event Listeners
+        [redSlider, yellowSlider, blueSlider, whiteSlider, blackSlider].forEach(slider => {
+            slider.addEventListener('input', updateMixedColor);
+        });
+        verifyButton.addEventListener('click', verifyColor);
+
+        // Initial setup
+        generateNewTargetColor();
+        updateMixedColor(); // Set initial mixed color (white)
+    </script>
+
+</body>
+</html>
