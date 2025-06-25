@@ -189,6 +189,157 @@
             color: #fff;
         }
 
+        /* Banner Slider DIUA Music */
+        #banner-music {
+            padding: 60px 0;
+            background: #fff;
+            min-height: auto;
+        }
+
+        .music-banner-slider {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .slider-container {
+            position: relative;
+            height: 250px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 900px;
+            padding: 0 40px;
+        }
+
+        .slide-text {
+            flex: 1;
+            max-width: 60%;
+        }
+
+        .slide-text h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .slide-text p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .banner-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .banner-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .slide-icon {
+            flex: 0 0 auto;
+            margin-left: 40px;
+        }
+
+        .slide-icon i {
+            font-size: 4rem;
+            opacity: 0.8;
+        }
+
+        .slider-navigation {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #fff;
+            transform: scale(1.2);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-arrow.prev {
+            left: 20px;
+        }
+
+        .slider-arrow.next {
+            right: 20px;
+        }
+
         /* Seção Sobre */
         #sobre {
             background-color: #fff;
@@ -272,7 +423,7 @@
         .galeria-img {
             height: auto;
             overflow: hidden;
-            cursor: pointer; /* Adicionado para indicar que é clicável */
+            cursor: pointer;
         }
 
         .galeria-img img {
@@ -559,16 +710,16 @@
 
         /* Estilos para o Modal de Imagem */
         .image-modal {
-            display: none; /* Escondido por padrão */
+            display: none;
             position: fixed;
-            z-index: 2000; /* Acima de outros elementos */
+            z-index: 2000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.85); /* Fundo preto semi-transparente */
-            padding-top: 50px; /* Espaço para o botão de fechar */
+            background-color: rgba(0, 0, 0, 0.85);
+            padding-top: 50px;
         }
 
         .image-modal-content {
@@ -576,10 +727,10 @@
             display: block;
             width: auto;
             max-width: 80%;
-            max-height: 75vh; /* Altura máxima da imagem */
-            background-color: #fff; /* Fundo branco para a área da imagem */
-            border: 8px solid #e74c3c; /* Borda vermelha principal */
-            box-shadow: 0 0 0 3px #000, 0 0 25px rgba(0,0,0,0.7); /* Borda preta fina e sombra */
+            max-height: 75vh;
+            background-color: #fff;
+            border: 8px solid #e74c3c;
+            box-shadow: 0 0 0 3px #000, 0 0 25px rgba(0,0,0,0.7);
             border-radius: 5px;
             position: relative;
         }
@@ -587,34 +738,33 @@
         .image-modal-inner-content {
             padding: 15px;
             background-color: #fff;
-            border-radius: 0 0 3px 3px; /* Para cantos arredondados se a borda for interna */
+            border-radius: 0 0 3px 3px;
         }
-
 
         #modalImage {
             display: block;
-            margin: 0 auto; /* Centralizar a imagem se for menor que o contêiner */
+            margin: 0 auto;
             max-width: 100%;
-            max-height: calc(75vh - 120px); /* Ajustar altura para caber título e ações */
+            max-height: calc(75vh - 120px);
             object-fit: contain;
         }
 
         .image-modal-close-btn {
             position: absolute;
-            top: -40px; /* Ajustado para fora da borda vermelha */
+            top: -40px;
             right: -5px;
-            color: #fff; /* Cor branca para contraste com fundo escuro */
+            color: #fff;
             font-size: 40px;
             font-weight: bold;
             transition: 0.3s;
             cursor: pointer;
-            background-color: #e74c3c; /* Fundo vermelho para o botão */
+            background-color: #e74c3c;
             width: 40px;
             height: 40px;
             line-height: 35px;
             text-align: center;
             border-radius: 50%;
-            border: 2px solid #fff; /* Borda branca no botão de fechar */
+            border: 2px solid #fff;
         }
 
         .image-modal-close-btn:hover,
@@ -626,7 +776,7 @@
         .image-modal-caption {
             text-align: center;
             padding: 10px 0;
-            color: #333; /* Cor preta para o título */
+            color: #333;
         }
         
         .image-modal-caption h3 {
@@ -671,18 +821,18 @@
         }
 
         .share-options {
-            display: none; /* Escondido por padrão */
+            display: none;
             position: absolute;
-            bottom: 100%; /* Aparece acima do botão de partilha */
+            bottom: 100%;
             left: 50%;
             transform: translateX(-50%);
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 4px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 2001; /* Acima do modal content */
+            z-index: 2001;
             padding: 5px 0;
-            margin-bottom: 10px; /* Espaço entre o botão e as opções */
+            margin-bottom: 10px;
             width: max-content;
         }
 
@@ -730,7 +880,6 @@
             opacity: 1;
         }
 
-
         /* Media Queries */
         @media (max-width: 992px) {
             .sobre-content, .contacto-content {
@@ -743,6 +892,25 @@
              .image-modal-content {
                 max-width: 90%;
             }
+
+            .slide-content {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .slide-text {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .slide-icon {
+                margin-left: 0;
+            }
+
+            .slider-container {
+                height: 300px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -752,25 +920,24 @@
 
             .nav-links {
                 position: fixed;
-                top: 80px; /* Ajustar com base na altura do header */
+                top: 80px;
                 left: -100%;
                 width: 100%;
-                height: calc(100vh - 80px); /* Altura total menos header */
+                height: calc(100vh - 80px);
                 background-color: #fff;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 transition: left 0.3s ease;
-                padding-top: 20px; /* Espaçamento interno */
+                padding-top: 20px;
             }
-
 
             .nav-links.active {
                 left: 0;
             }
 
             .nav-links li {
-                margin: 15px 0; /* Aumentar espaçamento vertical */
+                margin: 15px 0;
             }
 
             section {
@@ -794,7 +961,7 @@
             }
             
             .image-modal-actions {
-                flex-direction: column; /* Empilhar botões em telas menores */
+                flex-direction: column;
                 gap: 10px;
             }
             .modal-action-btn {
@@ -802,20 +969,52 @@
                 justify-content: center;
             }
             .share-options {
-                /* Ajustar posição para não sair da tela */
                 left: auto;
                 right: 0;
                 transform: none;
-                min-width: 200px; /* Para melhor leitura */
+                min-width: 200px;
             }
             .image-modal-content {
                 max-height: 80vh;
             }
             #modalImage {
-                 max-height: calc(80vh - 150px); /* Ajustar para mais espaço para ações */
+                 max-height: calc(80vh - 150px);
+            }
+
+            #banner-music {
+                padding: 40px 0;
+            }
+
+            .slider-container {
+                height: 280px;
+            }
+
+            .slide-text h3 {
+                font-size: 1.5rem;
+            }
+
+            .slide-text p {
+                font-size: 1rem;
+            }
+
+            .slide-icon i {
+                font-size: 3rem;
+            }
+
+            .slider-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .slider-arrow.prev {
+                left: 10px;
+            }
+
+            .slider-arrow.next {
+                right: 10px;
             }
         }
- 
     </style>
 </head>
 <body>
@@ -848,6 +1047,74 @@
                     <a href="#galeria" class="btn" data-page-nav="galeria">Ver Galeria</a>
                     <a href="jogo1.html" class="btn" data-page-nav="#">Mistura de cores</a>
                 </div>
+            </div>
+        </section>
+
+        <!-- Banner Slider DIUA Music -->
+        <section id="banner-music" class="page active">
+            <div class="container">
+                <div class="music-banner-slider">
+                    <div class="slider-container">
+                        <div class="slide active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div class="slide-content">
+                                <div class="slide-text">
+                                    <h3>🎵 DIUA Music</h3>
+                                    <p>Descubra nossa plataforma musical! Explore Kizomba, Rap, Trap e Gospel de artistas locais moçambicanos.</p>
+                                    <a href="https://diua-maker.github.io/DIUA-Music/" target="_blank" class="banner-btn">
+                                        <i class="fas fa-music"></i> Visitar DIUA Music
+                                    </a>
+                                </div>
+                                <div class="slide-icon">
+                                    <i class="fas fa-headphones"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slide" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <div class="slide-content">
+                                <div class="slide-text">
+                                    <h3>🎤 Talentos Locais</h3>
+                                    <p>Apoie a música moçambicana! Nossa plataforma conecta artistas e ouvintes, criando uma comunidade vibrante.</p>
+                                    <a href="https://diua-maker.github.io/DIUA-Music/" target="_blank" class="banner-btn">
+                                        <i class="fas fa-users"></i> Conhecer Artistas
+                                    </a>
+                                </div>
+                                <div class="slide-icon">
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slide" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <div class="slide-content">
+                                <div class="slide-text">
+                                    <h3>🎶 Múltiplos Géneros</h3>
+                                    <p>De Kizomba romântica ao Trap pesado - encontre o som perfeito para cada momento na DIUA Music.</p>
+                                    <a href="https://diua-maker.github.io/DIUA-Music/" target="_blank" class="banner-btn">
+                                        <i class="fas fa-play-circle"></i> Ouvir Agora
+                                    </a>
+                                </div>
+                                <div class="slide-icon">
+                                    <i class="fas fa-compact-disc"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-navigation">
+                        <button class="nav-dot active" data-slide="0"></button>
+                        <button class="nav-dot" data-slide="1"></button>
+                        <button class="nav-dot" data-slide="2"></button>
+                    </div>
+                    
+                    <button class="slider-arrow prev" onclick="changeSlide(-1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="slider-arrow next" onclick="changeSlide(1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
         </section>
 
         <!-- Página Sobre -->
@@ -994,7 +1261,6 @@
     </div>
     <div id="tempMessage" class="temp-message">Link copiado!</div>
 
-
     <!-- JavaScript -->
     <script>
         // Configuração do Firebase
@@ -1011,7 +1277,54 @@
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-    
+
+        // Variáveis do slider
+        let currentSlide = 0;
+        const totalSlides = 3;
+        let sliderInterval;
+
+        // Função para mudar slide
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.nav-dot');
+            
+            // Remover classe active do slide atual
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            // Calcular próximo slide
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            
+            // Adicionar classe active ao novo slide
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Função para ir para slide específico
+        function goToSlide(slideIndex) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.nav-dot');
+            
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = slideIndex;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Auto slide
+        function startAutoSlide() {
+            sliderInterval = setInterval(() => {
+                changeSlide(1);
+            }, 5000); // Muda a cada 5 segundos
+        }
+
+        function stopAutoSlide() {
+            clearInterval(sliderInterval);
+        }
+
         // Dados das obras de arte
         const obras = [
             { id: 23, titulo: "Mercado lixo - Quelimane", tecnica: "Grafite sobre papel", ano: 2025, categoria: "desenho", imagem: "IMG_20250617_101619.jpg" },
@@ -1053,14 +1366,12 @@
         const copyLinkBtn = document.getElementById('copyLinkBtn');
         const tempMessage = document.getElementById('tempMessage');
 
-
         function openImageModal(obra) {
             modalImage.src = obra.imagem;
             modalImage.alt = obra.titulo;
             modalTitle.textContent = obra.titulo;
-            modalDownloadBtn.href = obra.imagem; // O atributo 'download' fará o resto
+            modalDownloadBtn.href = obra.imagem;
 
-            // Construir URL completa para partilha
             const imageFullUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/' + obra.imagem;
             
             shareFacebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(imageFullUrl)}`;
@@ -1077,13 +1388,13 @@
             };
 
             imageModal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Impedir scroll do fundo
+            document.body.style.overflow = 'hidden';
         }
 
         function closeImageModal() {
             imageModal.style.display = 'none';
-            shareOptions.classList.remove('active'); // Esconder opções de partilha ao fechar
-            document.body.style.overflow = 'auto'; // Restaurar scroll do fundo
+            shareOptions.classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
         
         function showTempMessage(message) {
@@ -1096,23 +1407,21 @@
 
         modalCloseBtn.addEventListener('click', closeImageModal);
         imageModal.addEventListener('click', function(event) {
-            if (event.target === imageModal) { // Clicar fora do conteúdo do modal
+            if (event.target === imageModal) {
                 closeImageModal();
             }
         });
 
         modalShareBtn.addEventListener('click', function(event) {
-            event.stopPropagation(); // Impedir que o clique feche o modal se o shareOptions estiver dentro do modal-content
+            event.stopPropagation();
             shareOptions.classList.toggle('active');
         });
         
-        // Fechar opções de partilha se clicar fora delas
         document.addEventListener('click', function(event) {
             if (!modalShareBtn.contains(event.target) && !shareOptions.contains(event.target)) {
                 shareOptions.classList.remove('active');
             }
         });
-
 
         // Carregar obras na galeria com funcionalidades de like/dislike e comentários
         function carregarGaleria(filtro = 'todos') {
@@ -1162,7 +1471,6 @@
                     </div>
                 `;
                 
-                // Adicionar evento de clique para abrir o modal
                 const galeriaImgDiv = item.querySelector('.galeria-img');
                 galeriaImgDiv.addEventListener('click', () => openImageModal(obra));
 
@@ -1246,12 +1554,6 @@
             const userId = getUserId();
             if (!userId) {
                 showTempMessage('Por favor, faça login para reagir.');
-                // Idealmente, aqui você chamaria uma função de login.
-                // Por agora, apenas mostramos uma mensagem.
-                // Para fins de demonstração sem login real, podemos permitir a reação.
-                // Mas, para um sistema real, o login seria crucial.
-                // alert('Por favor, faça login com o Google para reagir.');
-                // return; 
             }
             
             const userReactionRef = database.ref(`userReactions/${obraId}/${userId}`);
@@ -1297,11 +1599,9 @@
                     comments.push(childSnapshot.val());
                 });
                 
-                // Firebase já pode retornar ordenado, mas podemos re-ordenar se necessário (mais recentes primeiro)
                 comments.reverse().forEach(comment => {
                     const commentEl = document.createElement('div');
                     commentEl.className = 'comment';
-                    // Poderia adicionar nome do usuário e data aqui se estivessem guardados
                     commentEl.textContent = comment.text; 
                     commentsList.appendChild(commentEl);
                 });
@@ -1309,11 +1609,9 @@
         }
 
         function publicarComentario(obraId, texto) {
-            const userId = getUserId(); // Ou firebase.auth().currentUser.uid se autenticado
+            const userId = getUserId();
              if (!userId) {
                 showTempMessage('Por favor, faça login para comentar.');
-                // alert('Por favor, faça login com o Google para comentar.');
-                // return;
             }
             
             const commentsRef = database.ref(`obras/${obraId}/comments`);
@@ -1322,7 +1620,7 @@
             newCommentRef.set({
                 text: texto,
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
-                userId: userId // Ou informações do usuário autenticado
+                userId: userId
             }).catch(error => {
                 console.error("Erro ao publicar comentário:", error);
                 showTempMessage("Erro ao enviar comentário.");
@@ -1330,10 +1628,6 @@
         }
 
         function getUserId() {
-            // Se Firebase Auth estiver configurado e usuário logado:
-            // if (firebase.auth().currentUser) {
-            //    return firebase.auth().currentUser.uid;
-            // }
             let userId = localStorage.getItem('diua_userId');
             if (!userId) {
                 userId = 'anon_' + Math.random().toString(36).substr(2, 9);
@@ -1347,16 +1641,43 @@
             const targetPage = document.getElementById(pageId);
             if (targetPage) targetPage.classList.add('active');
             
+            // Mostrar banner apenas na página inicial
+            const bannerSection = document.getElementById('banner-music');
+            if (pageId === 'inicio') {
+                bannerSection.classList.add('active');
+                startAutoSlide(); // Iniciar auto slide quando estiver na página inicial
+            } else {
+                bannerSection.classList.remove('active');
+                stopAutoSlide(); // Parar auto slide quando sair da página inicial
+            }
+            
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
             if (activeLink) activeLink.classList.add('active');
             
-            document.querySelector('.nav-links').classList.remove('active'); // Fechar menu móvel
+            document.querySelector('.nav-links').classList.remove('active');
             window.scrollTo(0, 0);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             carregarGaleria();
+            
+            // Inicializar slider
+            startAutoSlide();
+            
+            // Event listeners para navegação do slider
+            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                    stopAutoSlide();
+                    setTimeout(startAutoSlide, 1000); // Reiniciar auto slide após 1 segundo
+                });
+            });
+
+            // Pausar auto slide quando mouse estiver sobre o slider
+            const slider = document.querySelector('.music-banner-slider');
+            slider.addEventListener('mouseenter', stopAutoSlide);
+            slider.addEventListener('mouseleave', startAutoSlide);
             
             document.querySelectorAll('.filtro-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -1395,7 +1716,7 @@
             
             window.addEventListener('scroll', function() {
                 const header = document.querySelector('header');
-                if (header) { // Verificar se o header existe
+                if (header) {
                    if (window.pageYOffset > 50) {
                        header.classList.add('scrolled');
                    } else {
@@ -1413,7 +1734,6 @@
                 });
             }
         });
-    
     </script>
 </body>
 </html>
